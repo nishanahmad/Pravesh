@@ -33,7 +33,7 @@ if(isset($_SESSION["user_name"]))
 									'REMARKS' => $form['remarks']
 								  );
 		}
-		//var_dump($export_data);	
+		//var_dump($export_data);
 		
 		$fileName = date('d-m-Y',strtotime($date)) . ".xls";
 
@@ -55,6 +55,7 @@ if(isset($_SESSION["user_name"]))
 			{
 				if(!$flag) 
 				{
+					// display column names as first row
 					echo implode("\t", array_keys($row)) . "\n";
 					$flag = true;
 				}
@@ -62,7 +63,7 @@ if(isset($_SESSION["user_name"]))
 				array_walk($row, 'filterData');
 				echo implode("\t", array_values($row)) . "\n";
 			}
-			//header("Location:reports.php");
+			exit;			
 		}
 	}
 	
@@ -167,5 +168,5 @@ if(isset($_SESSION["user_name"]))
 	</html>
 <?php
 }
-else
-	header("Location:loginPage.php");
+//else
+	//header("Location:loginPage.php");

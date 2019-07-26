@@ -45,9 +45,6 @@
 			<div class="inner-bg">
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-8 col-sm-offset-2 text">
-							<h1><strong>TATA PRAVESH</strong></h1>
-						</div>						
 						<div class="col-sm-8 col-sm-offset-2 form-box">
 							<form role="form" action="user_login_session.php" method="post" class="registration-form">
 								<div class="form-top">
