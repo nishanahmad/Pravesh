@@ -81,7 +81,7 @@ if(isset($_SESSION["user_name"]))
 										<div align="center">
 											<br/>
 											<div class="form-group">
-												<input type="text" name="date" id="date" value="<?php echo $date;?>" onchange="document.location.href = 'index.php?date=' + this.value" class="form-control" style="width:30%">
+												<input type="text" name="date" id="date" value="<?php echo $date;?>" onchange="document.location.href = 'index.php?date=' + this.value" class="form-control" style="width:90%">
 											</div>
 											<br/>
 											  <table class="responsive-table">
