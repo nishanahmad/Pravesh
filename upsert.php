@@ -69,7 +69,7 @@ if(isset($_SESSION["user_name"]))
 	{
 		$sql="INSERT INTO lead_tracker (lead_assigned_date, lead_source, consumer_name, consumer_phone, consumer_address, dealer, consumer_type, 
 										door_requirement, window_requirement, stage, priority, demo_date, next_followup_date,
-										order_status,reason_for_loss,advance_received,sales_executive,created_on)
+										order_status,reason_for_loss,advance_received,sales_executive,store_visit,created_on)
 			 VALUES
 			 ('$lead_assigned_date', '$lead_source', '$consumer_name', '$consumer_phone', '$consumer_address', '$dealer', '$consumer_type', 
 										'$door_requirement', '$window_requirement', '$stage', '$priority', ".var_export($demo_date, true).", 
