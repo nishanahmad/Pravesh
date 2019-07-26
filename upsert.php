@@ -37,7 +37,7 @@ if(isset($_SESSION["user_name"]))
 	$reason_for_loss = $_POST['reason_for_loss'];
 	$advance_received = $_POST['advance_received'];
 	$remarks = $_POST['remarks'];	
-	$store_visit = = $_POST['store_visit'];			
+	$store_visit = $_POST['store_visit'];			
 	$sales_executive = $_SESSION["user_name"];	
 	$created_on = date('Y-m-d H:i:s');		
 
