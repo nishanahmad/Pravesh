@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Home</title>
+		<title>Login</title>
 
 		<!-- CSS -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
@@ -49,7 +49,7 @@
 							<h1><strong>TATA PRAVESH</strong></h1>
 						</div>						
 						<div class="col-sm-8 col-sm-offset-2 form-box">
-							<form role="form" action="user_login_session" method="post" class="registration-form">
+							<form role="form" action="user_login_session.php" method="post" class="registration-form">
 								<div class="form-top">
 									<div class="col-sm-8 col-sm-offset-5 text">
 										<h3><strong>LOGIN</strong></h3>
