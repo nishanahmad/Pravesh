@@ -79,8 +79,9 @@ if(isset($_SESSION["user_name"]))
 													<th scope="col">Address</th>
 													<th scope="col">Phone</th>
 													<th scope="col">Priority</th>
-													<th scope="col">Next FollowUp Date</th>
+													<th scope="col">FollowUp Date</th>
 													<th scope="col">Demo Date</th>
+													<th scope="col"></th>
 												  </tr>
 												</thead>
 												<tfoot>
@@ -91,11 +92,16 @@ if(isset($_SESSION["user_name"]))
 												{																							?>
 													<tr>
 														<th scope="row"><?php echo $lead['consumer_name'];?></th>
-														<td scope="row"><?php echo $lead['consumer_address'];?></td>
-														<td scope="row"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
-														<td scope="row"><?php echo $lead['priority'];?></td>
-														<td scope="row"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));}?></td>
-														<td scope="row"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));}?></td>
+														<td data-title="Address"><?php echo $lead['consumer_address'];?></td>
+														<td data-title="Phone"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
+														<td data-title="Priority"><?php echo $lead['priority'];?></td>
+														<td data-title="FollowUp Date"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));} else{echo '<font color="white">1</font>';}?></td>
+														<td data-title="Demo Date"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));} else{echo '<font color="white">1</font>';}?></td>
+														<td><?php if($_SESSION['user_name'] != 'Demo')
+																  {																										?>
+																	<a href="form.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a>
+														</td>																																								<?php
+																  }																																	?>														
 													</tr>																																										<?php
 												}																																												?>			
 												</tbody>
