@@ -56,7 +56,7 @@ if(isset($_SESSION["user_name"]))
 				if(!$flag) 
 				{
 					// display column names as first row
-					echo implode("\t", array_keys($row)) . "\n";
+					echo implode("\t",array_keys($row)) . "</b>\n";
 					$flag = true;
 				}
 				// filter data
@@ -115,6 +115,7 @@ if(isset($_SESSION["user_name"]))
 									<a href="index.php"><i class="fa fa-home"></i></a>
 									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
 									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
+									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
 								</span>
 							</li>
 						</ul>

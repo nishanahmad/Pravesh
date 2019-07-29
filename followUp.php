@@ -5,16 +5,6 @@ if(isset($_SESSION["user_name"]))
 	require 'connect.php';
 	require 'monthMap.php';
 	
-	if(isset($_GET['date']))
-	{
-		$sqlDate = date('Y-m-d',strtotime($_GET['date']));
-		$date = date('d-m-Y',strtotime($sqlDate));
-	}
-	else
-	{
-		$sqlDate = date('Y-m-d');
-		$date = date('d-m-Y',strtotime($sqlDate));
-	}
 ?>
 	<!DOCTYPE html>
 	<html lang="en">
@@ -22,7 +12,7 @@ if(isset($_SESSION["user_name"]))
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Home</title>
+			<title>Follow Up</title>
 
 			<!-- CSS -->
 			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
@@ -86,27 +76,24 @@ if(isset($_SESSION["user_name"]))
 											</div>
 											<br/>
 											  <table class="responsive-table">
-												<caption>Leads entered on <?php echo $date;?></caption>
+												<caption>Follow Up List</caption>
 												<thead>
 												  <tr>
 													<th scope="col">Name</th>
 													<th scope="col">Address</th>
-													<th scope="col"></th>
+													<th scope="col">Phone</th>
 												  </tr>
 												</thead>
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE lead_assigned_date = '$sqlDate' ORDER BY created_on DESC") or die(mysqli_error($con));												
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,demo_date,next_followup_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
 														<th scope="row"><?php echo $lead['consumer_name'];?></th>
 														<td scope="row"><?php echo $lead['consumer_address'];?></td>
-														<td><?php if($_SESSION['user_name'] != 'Demo')
-																  {																										?>
-																	<a href="form.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a></td><?php
-																  }																																	?>
+														<td scope="row"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
 													</tr>																																										<?php
 												}																																												?>			
 												</tbody>
