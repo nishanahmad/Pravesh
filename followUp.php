@@ -71,10 +71,6 @@ if(isset($_SESSION["user_name"]))
 									<div class="form-top">
 										<div align="center">
 											<br/>
-											<div class="form-group">
-												<input type="text" name="date" id="date" value="<?php echo $date;?>" onchange="document.location.href = 'index.php?date=' + this.value" class="form-control" style="width:90%">
-											</div>
-											<br/>
 											  <table class="responsive-table">
 												<caption>Follow Up List</caption>
 												<thead>
@@ -82,18 +78,24 @@ if(isset($_SESSION["user_name"]))
 													<th scope="col">Name</th>
 													<th scope="col">Address</th>
 													<th scope="col">Phone</th>
+													<th scope="col">Priority</th>
+													<th scope="col">Next FollowUp Date</th>
+													<th scope="col">Demo Date</th>
 												  </tr>
 												</thead>
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,demo_date,next_followup_date,lead_assigned_date") or die(mysqli_error($con));
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
 														<th scope="row"><?php echo $lead['consumer_name'];?></th>
 														<td scope="row"><?php echo $lead['consumer_address'];?></td>
 														<td scope="row"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
+														<td scope="row"><?php echo $lead['priority'];?></td>
+														<td scope="row"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));}?></td>
+														<td scope="row"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));}?></td>
 													</tr>																																										<?php
 												}																																												?>			
 												</tbody>
