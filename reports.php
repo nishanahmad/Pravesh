@@ -1,70 +1,169 @@
 <?php
+
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 session_start();
 if(isset($_SESSION["user_name"]))
 {
 	require 'connect.php';
 	require 'monthMap.php';
+
+	require_once __DIR__ . '/vendor/phpoffice/phpspreadsheet/src/Bootstrap.php';	
 	
 	if($_POST)
 	{
-		$export_data = array();
 		$date = date('Y-m-d',strtotime($_POST['date']));
+		
+		$helper = new Sample();
+		if ($helper->isCli()) {
+			$helper->log('This example should only be run from a Web Browser' . PHP_EOL);
+
+			return;
+		}
+		// Create new Spreadsheet object
+		$spreadsheet = new Spreadsheet();
+
+		$spreadsheet->setActiveSheetIndex(0)
+			->setCellValue('A1', 'Lead Assigned Date')
+			->setCellValue('B1', 'Lead Source')
+			->setCellValue('C1', 'SE')
+			->setCellValue('D1', 'Consumer Name')
+			->setCellValue('E1', 'Consumer Contact No')
+			->setCellValue('F1', 'Consumer Full Address')
+			->setCellValue('G1', 'Dealer')
+			->setCellValue('H1', 'Consumer Type')
+			->setCellValue('I1', 'Door requirement')
+			->setCellValue('J1', 'Window requirement')
+			->setCellValue('K1', 'Stage of Construction')
+			->setCellValue('L1', 'Priority')
+			->setCellValue('M1', 'Demo Date')
+			->setCellValue('N1', 'Next Followup Date')
+			->setCellValue('O1', 'Order Status')		
+			->setCellValue('P1', 'Reason for Loss')
+			->setCellValue('Q1', 'Advance Received (Y/N)')
+			->setCellValue('R1', 'Store Visit')
+			->setCellValue('S1', 'Remarks');
+		
+		$i = 2;		
 		$formList = mysqli_query($con,"SELECT * FROM lead_tracker WHERE lead_assigned_date = '$date'") or die(mysqli_error($con));
 		foreach($formList as $form)
 		{
-			$export_data[] = array(
-									'Lead Assigned Date' => $form['lead_assigned_date'],
-									'Lead Source' => $form['lead_source'],
-									'SE' => $form['sales_executive'],
-									'Consumer Name' => $form['consumer_name'],
-									'Consumer Contact No' => $form['consumer_phone'],
-									'Consumer Full Address' => $form['consumer_address'],
-									'Dealer' => $form['dealer'],
-									'Consumer Type' => $form['consumer_type'],
-									'Door requirement' => $form['door_requirement'],
-									'Window requirement' => $form['window_requirement'],
-									'Stage of Construction' => $form['stage'],
-									'Priority' => $form['priority'],
-									'Demo Date' => $form['demo_date'],
-									'Next Followup Date' => $form['next_followup_date'],
-									'Order Status' => $form['order_status'],
-									'Reason for Loss' => $form['reason_for_loss'],
-									'Advance Received (Y/N)' => $form['advance_received'],
-									'REMARKS' => $form['remarks']
-								  );
+			if($form['store_visit'] != null)
+				$store_visit = date('d-m-Y',strtotime($form['store_visit']));
+			else
+				$store_visit = 'No';
+			
+			$spreadsheet->setActiveSheetIndex(0)
+				->setCellValue('A'.$i, $form['lead_assigned_date'])    
+				->setCellValue('B'.$i, $form['lead_source'])
+				->setCellValue('C'.$i, $form['sales_executive'])
+				->setCellValue('D'.$i, $form['consumer_name'])
+				->setCellValue('E'.$i, $form['consumer_phone'])
+				->setCellValue('F'.$i, $form['consumer_address'])
+				->setCellValue('G'.$i, $form['dealer'])
+				->setCellValue('H'.$i, $form['consumer_type'])
+				->setCellValue('I'.$i, $form['door_requirement'])
+				->setCellValue('J'.$i, $form['window_requirement'])
+				->setCellValue('K'.$i, $form['stage'])
+				->setCellValue('L'.$i, $form['priority'])
+				->setCellValue('M'.$i, $form['demo_date'])
+				->setCellValue('N'.$i, $form['next_followup_date'])
+				->setCellValue('O'.$i, $form['order_status'])
+				->setCellValue('P'.$i, $form['reason_for_loss'])
+				->setCellValue('Q'.$i, $form['advance_received'])
+				->setCellValue('R'.$i, $store_visit)
+				->setCellValue('S'.$i, $form['remarks']);
+				
+			$i++;	
 		}
-		//var_dump($export_data);
+
+		//Style the sheet
 		
-		$fileName = date('d-m-Y',strtotime($date)) . ".xls";
+		$headerStyleArray = [
+			'font' => [
+				'bold' => true,
+				'name' => 'Arial',
+				'size' => 10,
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,	
+				'wrapText' => true,	
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+			],						
+		];
+		
+		$styleArray = [
+			'font' => [
+				'size' => 11,
+			],		
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+			],			
+		];		
+		
+		$i = $i-1;
+		$spreadsheet->getActiveSheet()->getStyle('A1:S1')->applyFromArray($headerStyleArray);
+		$spreadsheet->getActiveSheet()->getStyle('A2:S'.$i)->applyFromArray($styleArray);
+		$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+		$spreadsheet->getActiveSheet()->getColumnDimension('O')->setWidth(12);
+		$spreadsheet->getActiveSheet()->getColumnDimension('P')->setWidth(12);
+		$spreadsheet->getActiveSheet()->getColumnDimension('Q')->setWidth(12);
+		$spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+		$spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(55);
+		
+		
+		
+		
+		// Rename worksheet
+		$spreadsheet->getActiveSheet()->setTitle($_POST['date']);
 
-		if ($export_data) 
-		{
-			function filterData(&$str) 
-			{
-				$str = preg_replace("/\t/", "\\t", $str);
-				$str = preg_replace("/\r?\n/", "\\n", $str);
-				if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
-			}
+		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+		$spreadsheet->setActiveSheetIndex(0);
 
-			// headers for download
-			header("Content-Disposition: attachment; filename=\"$fileName\"");
-			header("Content-Type: application/vnd.ms-excel");
+		// Redirect output to a client’s web browser (Xlsx)
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.$_POST['date'].'.xlsx"');
+		header('Cache-Control: max-age=0');
+		// If you're serving to IE 9, then the following may be needed
+		header('Cache-Control: max-age=1');
 
-			$flag = false;
-			foreach($export_data as $row) 
-			{
-				if(!$flag) 
-				{
-					// display column names as first row
-					echo implode("\t",array_keys($row)) . "</b>\n";
-					$flag = true;
-				}
-				// filter data
-				array_walk($row, 'filterData');
-				echo implode("\t", array_values($row)) . "\n";
-			}
-			exit;			
-		}
+		// If you're serving to IE over SSL, then the following may be needed
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+		header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+		header('Pragma: public'); // HTTP/1.0
+
+		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+		$writer->save('php://output');
+		exit;
 	}
 	
 ?>
