@@ -37,7 +37,12 @@ if(isset($_SESSION["user_name"]))
 	$reason_for_loss = $_POST['reason_for_loss'];
 	$advance_received = $_POST['advance_received'];
 	$remarks = $_POST['remarks'];	
-	$store_visit = $_POST['store_visit'];			
+	
+	if(!empty($_POST['store_visit']))
+		$store_visit = date('Y-m-d',strtotime($_POST['store_visit']));
+	else
+		$store_visit = null;			
+
 	$sales_executive = $_SESSION["user_name"];	
 	$created_on = date('Y-m-d H:i:s');		
 
@@ -60,7 +65,7 @@ if(isset($_SESSION["user_name"]))
 										reason_for_loss = '$reason_for_loss',
 										advance_received = '$advance_received',
 										remarks = '$remarks',
-										store_visit = '$store_visit'
+										store_visit = ".var_export($store_visit, true)."
 									WHERE id = '$id'";
 		
 		$update = mysqli_query($con, $query) or die(mysqli_error($con));		
@@ -74,7 +79,7 @@ if(isset($_SESSION["user_name"]))
 			 ('$lead_assigned_date', '$lead_source', '$consumer_name', '$consumer_phone', '$consumer_address', '$dealer', '$consumer_type', 
 										'$door_requirement', '$window_requirement', '$stage', '$priority', ".var_export($demo_date, true).", 
 										".var_export($next_followup_date, true).",'$order_status','$reason_for_loss','$advance_received',
-										'$sales_executive','$store_visit','$created_on')";
+										'$sales_executive',".var_export($store_visit, true).",'$created_on')";
 
 		$insert = mysqli_query($con, $sql) or die(mysqli_error($con));		
 	}

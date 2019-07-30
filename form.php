@@ -40,7 +40,11 @@ if(isset($_SESSION["user_name"]))
 		$reason_for_loss = $form['reason_for_loss'];
 		$advance_received = $form['advance_received'];
 		$remarks = $form['remarks'];
-		$store_visit = $form['store_visit'];
+		
+		if($form['store_visit'] != null)
+			$store_visit = date('d-m-Y',strtotime($form['store_visit']));
+		else
+			$store_visit = null;
 	}
 ?>
 	<!DOCTYPE html>
@@ -209,11 +213,8 @@ if(isset($_SESSION["user_name"]))
 												</select>
 											</div>				
 											<div class="form-group">
-												<label for="store_visit">Store Visit</label>
-												<select id="store_visit" name="store_visit" class="form-control">
-													<option <?php if(isset($store_visit) && $store_visit == 'No') echo 'selected';?> value="No">No</option>
-													<option <?php if(isset($store_visit) && $store_visit == 'Yes') echo 'selected';?> value="Yes">Yes</option>
-												</select>
+												<label for="store_visit">Store Visited On</label>
+												<input type="text" name="store_visit" class="form-control ignore" id="store_visit" value="<?php if(isset($store_visit)) echo $store_visit;?>">
 											</div>															
 											<button type="button" class="btn btn-previous btn-primary">Previous</button>
 											<button type="button" class="btn btn-next btn-primary">Next</button>
@@ -297,6 +298,9 @@ if(isset($_SESSION["user_name"]))
 					
 					var next_followup_date = { dateFormat:"dd-mm-yy"};
 					$( "#next_followup_date" ).datepicker(next_followup_date);
+					
+					var store_visit = { dateFormat:"dd-mm-yy"};
+					$( "#store_visit" ).datepicker(store_visit);					
 				});
 			</script>
 		</body>
