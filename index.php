@@ -64,6 +64,7 @@ if(isset($_SESSION["user_name"]))
 									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
 									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
 									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
+									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
 								</span>
 							</li>
 						</ul>
@@ -105,7 +106,8 @@ if(isset($_SESSION["user_name"]))
 														<td scope="row"><?php echo $lead['consumer_address'];?></td>
 														<td><?php if($_SESSION['user_name'] != 'Demo')
 																  {																										?>
-																	<a href="form.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a></td><?php
+																	<a href="form.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a>
+														</td>																																								<?php
 																  }																																	?>
 													</tr>																																										<?php
 												}																																												?>			
