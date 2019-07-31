@@ -52,13 +52,26 @@ if(isset($_SESSION["user_name"]))
 		$formList = mysqli_query($con,"SELECT * FROM lead_tracker WHERE lead_assigned_date = '$date'") or die(mysqli_error($con));
 		foreach($formList as $form)
 		{
+			$lead_assigned_date = date('d-m-Y',strtotime($form['lead_assigned_date']));
+			
+			if($form['demo_date'] != null)
+				$demo_date = date('d-m-Y',strtotime($form['demo_date']));
+			else
+				$demo_date = null;
+
+			if($form['next_followup_date'] != null)
+				$next_followup_date = date('d-m-Y',strtotime($form['next_followup_date']));
+			else
+				$next_followup_date = null;
+			
 			if($form['store_visit'] != null)
 				$store_visit = date('d-m-Y',strtotime($form['store_visit']));
 			else
 				$store_visit = 'No';
 			
 			$spreadsheet->setActiveSheetIndex(0)
-				->setCellValue('A'.$i, $form['lead_assigned_date'])    
+				
+				->setCellValue('A'.$i, (string)$lead_assigned_date)    
 				->setCellValue('B'.$i, $form['lead_source'])
 				->setCellValue('C'.$i, $form['sales_executive'])
 				->setCellValue('D'.$i, $form['consumer_name'])
@@ -70,8 +83,8 @@ if(isset($_SESSION["user_name"]))
 				->setCellValue('J'.$i, $form['window_requirement'])
 				->setCellValue('K'.$i, $form['stage'])
 				->setCellValue('L'.$i, $form['priority'])
-				->setCellValue('M'.$i, $form['demo_date'])
-				->setCellValue('N'.$i, $form['next_followup_date'])
+				->setCellValue('M'.$i, $demo_date)
+				->setCellValue('N'.$i, $next_followup_date)
 				->setCellValue('O'.$i, $form['order_status'])
 				->setCellValue('P'.$i, $form['reason_for_loss'])
 				->setCellValue('Q'.$i, $form['advance_received'])
@@ -80,7 +93,8 @@ if(isset($_SESSION["user_name"]))
 				
 			$i++;	
 		}
-
+				
+		
 		//Style the sheet
 		
 		$headerStyleArray = [
@@ -138,8 +152,6 @@ if(isset($_SESSION["user_name"]))
 		$spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
 		$spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(55);
-		
-		
 		
 		
 		// Rename worksheet
