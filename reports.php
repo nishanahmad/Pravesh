@@ -175,6 +175,7 @@ if(isset($_SESSION["user_name"]))
 
 		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 		$writer->save('php://output');
+		
 		exit;
 	}
 	
@@ -256,7 +257,7 @@ if(isset($_SESSION["user_name"]))
 											<div class="form-group">
 												<input type="text" name="date" class="form-control" id="date" value="<?php echo date('d-m-Y'); ?>">
 											</div>
-											<button type="submit" class="btn btn-next btn-primary">Export Report</button>
+											<button type="submit" class="btn btn-success">Excel&nbsp;&nbsp;<i class="fas fa-file-excel-o"></i></button>
 										</div>
 								</form>		
 							</div>
