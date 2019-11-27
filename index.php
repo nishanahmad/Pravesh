@@ -60,11 +60,12 @@ if(isset($_SESSION["user_name"]))
 						<ul class="nav navbar-nav navbar-right">
 							<li>
 								<span class="li-social">
-									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
-									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
+									<a href="index.php"><i class="fa fa-home fa-2x"></i></a>
+									<a href="form.php"><i class="fa fa-plus-square fa-2x"></i></a> 
+									<a href="reports.php"><i class="fa fa-envelope fa-2x"></i></a> 
+									<a href="followUp.php"><i class="fa fa-fire fa-2x"></i></a> 
+									<a href="pending.php"><i class="fa fa-spinner fa-2x"></i></a>
+									<a href="logout.php"><i class="fa fa-power-off fa-2x"></i></a> 
 								</span>
 							</li>
 						</ul>

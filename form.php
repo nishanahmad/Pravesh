@@ -94,6 +94,7 @@ if(isset($_SESSION["user_name"]))
 									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
 									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
 									<a href="followUp.php"><i class="fa fa-fire"></i></a>
+									<a href="pending.php"><i class="fa fa-spinner"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a>  										
 								</span>
 							</li>
@@ -207,6 +208,7 @@ if(isset($_SESSION["user_name"]))
 												<label for="priority">Priority</label>
 												<select id="priority" name="priority" class="form-control">
 													<option value=""></option>
+													<option <?php if(isset($priority) && $priority == 'Delivery Pending') echo 'selected';?> value="Delivery Pending">Delivery Pending</option>
 													<option <?php if(isset($priority) && $priority == 'Hot') echo 'selected';?> value="Hot">Hot</option>
 													<option <?php if(isset($priority) && $priority == 'Warm') echo 'selected';?> value="Warm">Warm</option>
 													<option <?php if(isset($priority) && $priority == 'Cold') echo 'selected';?> value="Cold">Cold</option>

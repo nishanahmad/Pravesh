@@ -74,7 +74,7 @@ if(isset($_SESSION["user_name"]))
 										<div align="center">
 											<br/>
 											  <table class="responsive-table">
-												<caption>Follow Up List</caption>
+												<caption>Delivery Pending</caption>
 												<thead>
 												  <tr>
 													<th scope="col">Name</th>
@@ -89,7 +89,7 @@ if(isset($_SESSION["user_name"]))
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE priority = 'Delivery Pending' AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
