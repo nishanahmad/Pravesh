@@ -54,7 +54,8 @@ if(isset($_SESSION["user_name"]))
 									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
 									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
 									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
-									<a href="pending.php"><i class="fa fa-spinner"></i></a>
+									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
+									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
 								</span>
 							</li>

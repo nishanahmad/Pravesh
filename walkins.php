@@ -12,7 +12,7 @@ if(isset($_SESSION["user_name"]))
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Follow Up</title>
+			<title>Walk Ins</title>
 
 			<!-- CSS -->
 			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
@@ -74,41 +74,29 @@ if(isset($_SESSION["user_name"]))
 									<div class="form-top">
 										<div align="center">
 											<br/>
-											  <table class="responsive-table">
-												<caption>Follow Up List</caption>
+											<a href="walkinForm.php" class="btn btn-success" style="width:120px;font-size:20px;">NEW&nbsp;&nbsp;<i class="fa fa-plus-square"></i></a>
+											<br/>
+											<table class="responsive-table">
+												<caption>Walk In Count</caption>
 												<thead>
-												  <tr>
-													<th scope="col">Name</th>
-													<th scope="col">Address</th>
-													<th scope="col">Phone</th>
-													<th scope="col">Priority</th>
-													<th scope="col">FollowUp Date</th>
-													<th scope="col">Demo Date</th>
-													<th scope="col"></th>
-												  </tr>
+													<tr>
+														<th scope="col">Date</th>
+														<th scope="col">Walk In Count</th>
+													</tr>
 												</thead>
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
-												foreach($leads as $lead)
-												{																							?>
-													<tr>
-														<th scope="row"><?php echo $lead['consumer_name'];?></th>
-														<td data-title="Address"><?php echo $lead['consumer_address'];?></td>
-														<td data-title="Phone"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
-														<td data-title="Priority"><?php echo $lead['priority'];?></td>
-														<td data-title="FollowUp Date"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));} else{echo '<font color="white">1</font>';}?></td>
-														<td data-title="Demo Date"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));} else{echo '<font color="white">1</font>';}?></td>
-														<td><?php if($_SESSION['user_name'] != 'Demo')
-																  {																										?>
-																	<a href="form.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a>
-														</td>																																								<?php
-																  }																																	?>														
-													</tr>																																										<?php
-												}																																												?>			
+													$leads = mysqli_query($con,"SELECT * FROM walk_ins ORDER BY date DESC") or die(mysqli_error($con));
+													foreach($leads as $lead)
+													{																							?>
+														<tr>
+															<th scope="row"><?php echo date('d-m-Y',strtotime($lead['date']));?></th>													
+															<td data-title="Count"><?php echo $lead['count'];?></td>
+														</tr>																																										<?php
+													}																																												?>			
 												</tbody>
-											  </table>												
+											</table>												
 										</div>
 									</div>
 								</form>		
