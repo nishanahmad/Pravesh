@@ -5,6 +5,11 @@ if(isset($_SESSION["user_name"]))
 	require 'connect.php';
 	require 'monthMap.php';
 	
+	if(isset($_GET['priority']))
+		$priority = $_GET['priority'];
+	else
+		$priority = 'Hot';
+	
 ?>
 	<!DOCTYPE html>
 	<html lang="en">
@@ -12,7 +17,7 @@ if(isset($_SESSION["user_name"]))
 			<meta charset="utf-8">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>Follow Up</title>
+			<title>Priority List</title>
 
 			<!-- CSS -->
 			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
@@ -24,6 +29,7 @@ if(isset($_SESSION["user_name"]))
 			<link rel="stylesheet" href="assets/css/loadBar.css">
 			<link rel="stylesheet" href="assets/css/indexTable.css">
 			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
 			<!-- Favicon and touch icons -->
 			<link rel="shortcut icon" href="assets/ico/favicon.png">
@@ -51,9 +57,7 @@ if(isset($_SESSION["user_name"]))
 							<li>
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
+									<a href="priorityList.php"><i class="fa fa-fire"></i></a> 
 									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
@@ -64,6 +68,7 @@ if(isset($_SESSION["user_name"]))
 				</div>
 			</nav>
 
+
 			<!-- Top content -->
 			<div class="top-content">
 				<div class="inner-bg">
@@ -73,15 +78,25 @@ if(isset($_SESSION["user_name"]))
 								<form role="form" action="" method="post" class="registration-form">
 									<div class="form-top">
 										<div align="center">
-											<br/>
+											<h3><b>Priority List</b></h3>
+											<select name="priority" id="priority" onchange="document.location.href = 'priorityList.php?priority=' + this.value" class="selectpicker"
+												<?php 
+												if($priority == 'Hot'){ echo 'data-style="btn-danger"';}
+												else if($priority == 'Warm'){ echo 'data-style="btn-warning"';}
+												else if($priority == 'Cold'){ echo 'data-style="btn-info"';}
+												?>
+											>	
+												<option style="background: #d9534f; color: #fff;" value="Hot" <?php if($priority == 'Hot') echo 'selected';?>>Hot </option>
+												<option style="background: #ec971f; color: #fff;" value="Warm" <?php if($priority == 'Warm') echo 'selected';?>>Warm</option>
+												<option style="background: #19b9e7; color: #fff;" value="Cold" <?php if($priority == 'Cold') echo 'selected';?>>Cold</option>
+											</select>					
+											<br/><br/>
 											  <table class="responsive-table">
-												<caption>Follow Up List</caption>
 												<thead>
 												  <tr>
 													<th scope="col">Name</th>
 													<th scope="col">Address</th>
 													<th scope="col">Phone</th>
-													<th scope="col">Priority</th>
 													<th scope="col">FollowUp Date</th>
 													<th scope="col">Demo Date</th>
 													<th scope="col"></th>
@@ -90,14 +105,13 @@ if(isset($_SESSION["user_name"]))
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE (priority = 'Hot' OR Priority = 'Warm') AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE priority = '$priority' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
 														<th scope="row"><?php echo $lead['consumer_name'];?></th>
 														<td data-title="Address"><?php echo $lead['consumer_address'];?></td>
 														<td data-title="Phone"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
-														<td data-title="Priority"><?php echo $lead['priority'];?></td>
 														<td data-title="FollowUp Date"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));} else{echo '<font color="white">1</font>';}?></td>
 														<td data-title="Demo Date"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));} else{echo '<font color="white">1</font>';}?></td>
 														<td><?php if($_SESSION['user_name'] != 'Demo')
@@ -124,6 +138,7 @@ if(isset($_SESSION["user_name"]))
 			<script src="assets/js/jquery.backstretch.min.js"></script>
 			<script src="assets/js/retina-1.1.0.min.js"></script>
 			<script src="assets/js/scripts.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>			
 			<script>
 				$(function() {
 					var date = { dateFormat:"dd-mm-yy"}; 

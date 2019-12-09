@@ -51,9 +51,7 @@ if(isset($_SESSION["user_name"]))
 							<li>
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
+									<a href="priorityList.php"><i class="fa fa-fire"></i></a> 
 									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
@@ -82,6 +80,7 @@ if(isset($_SESSION["user_name"]))
 													<tr>
 														<th scope="col">Date</th>
 														<th scope="col">Walk In Count</th>
+														<th scope="col"></th>
 													</tr>
 												</thead>
 												<tfoot>
@@ -92,7 +91,13 @@ if(isset($_SESSION["user_name"]))
 													{																							?>
 														<tr>
 															<th scope="row"><?php echo date('d-m-Y',strtotime($lead['date']));?></th>													
-															<td data-title="Count"><?php echo $lead['count'];?></td>
+															<td data-title="Count"><?php echo $lead['count'];?></td>														
+															<td><?php 
+																if($_SESSION['user_name'] != 'Demo')
+																{																										?>
+																	<a href="walkinForm.php?id=<?php echo $lead['id'];?>" class="btn btn-success" style="width:80px;">Edit <i class="fas fa-pen"></i></a><?php
+																}																																	?>																	
+															</td>																																																						
 														</tr>																																										<?php
 													}																																												?>			
 												</tbody>

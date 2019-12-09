@@ -91,9 +91,7 @@ if(isset($_SESSION["user_name"]))
 							<li>
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a>
+									<a href="priorityList.php"><i class="fa fa-fire"></i></a>
 									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a>  										
@@ -209,7 +207,6 @@ if(isset($_SESSION["user_name"]))
 												<label for="priority">Priority</label>
 												<select id="priority" name="priority" class="form-control">
 													<option value=""></option>
-													<option <?php if(isset($priority) && $priority == 'Delivery Pending') echo 'selected';?> value="Delivery Pending">Delivery Pending</option>
 													<option <?php if(isset($priority) && $priority == 'Hot') echo 'selected';?> value="Hot">Hot</option>
 													<option <?php if(isset($priority) && $priority == 'Warm') echo 'selected';?> value="Warm">Warm</option>
 													<option <?php if(isset($priority) && $priority == 'Cold') echo 'selected';?> value="Cold">Cold</option>
@@ -247,6 +244,7 @@ if(isset($_SESSION["user_name"]))
 												<label for="order_status">Order Status</label>
 												<select id="order_status" name="order_status" class="form-control">
 													<option <?php if(isset($order_status) && $order_status == 'Open') echo 'Open';?> value="Open">Open</option>
+													<option <?php if(isset($order_status) && $order_status == 'Delivery Pending') echo 'Delivery Pending';?> value="Delivery Pending">Delivery Pending</option>
 													<option <?php if(isset($order_status) && $order_status == 'Closed') echo 'Closed';?> value="Closed">Closed</option>
 													<option <?php if(isset($order_status) && $order_status == 'Lost') echo 'Lost';?> value="Lost">Lost</option>
 												</select>	

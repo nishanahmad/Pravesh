@@ -4,18 +4,34 @@ if(isset($_SESSION["user_name"]))
 {
 	require 'connect.php';																				
 	
+	if(isset($_GET['id']))
+		$id = $_GET['id'];
+	
 	if($_POST)
 	{
 		$date = date('Y-m-d',strtotime($_POST['date']));
 		$count = (integer)$_POST['count'];
 		
-		$sql="INSERT INTO walk_ins (date, count) VALUES ('$date', $count)";
-		$insert = mysqli_query($con, $sql);
-		
-		if($insert)
-			header("Location:walkins.php");
+		if(isset($id))
+		{
+			$query="UPDATE walk_ins SET date = '$date',count = $count WHERE Id = $id";
+			$update = mysqli_query($con, $query);
+			
+			if($update)
+				header("Location:walkins.php");
+			else
+				header("Location:walkinForm.php?error=Duplicate entry. Please enter again");					
+		}
 		else
-			header("Location:walkinForm.php?error=Duplicate entry. Please enter again");
+		{
+			$sql="INSERT INTO walk_ins (date, count) VALUES ('$date', $count)";
+			$insert = mysqli_query($con, $sql);
+			
+			if($insert)
+				header("Location:walkins.php");
+			else
+				header("Location:walkinForm.php?error=Duplicate entry. Please enter again");			
+		}
 	}
 ?>		
 	<!DOCTYPE html>
@@ -62,9 +78,7 @@ if(isset($_SESSION["user_name"]))
 							<li>
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a>
+									<a href="priorityList.php"><i class="fa fa-fire"></i></a>
 									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a>  										

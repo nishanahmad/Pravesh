@@ -51,9 +51,7 @@ if(isset($_SESSION["user_name"]))
 							<li>
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
-									<a href="form.php"><i class="fa fa-plus-square"></i></a> 
-									<a href="reports.php"><i class="fa fa-envelope"></i></a> 
-									<a href="followUp.php"><i class="fa fa-fire"></i></a> 
+									<a href="priorityList.php"><i class="fa fa-fire"></i></a> 
 									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a> 
@@ -81,7 +79,7 @@ if(isset($_SESSION["user_name"]))
 													<th scope="col">Name</th>
 													<th scope="col">Address</th>
 													<th scope="col">Phone</th>
-													<th scope="col">Priority</th>
+													<th scope="col">Stage</th>
 													<th scope="col">FollowUp Date</th>
 													<th scope="col">Demo Date</th>
 													<th scope="col"></th>
@@ -90,14 +88,14 @@ if(isset($_SESSION["user_name"]))
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE priority = 'Delivery Pending' AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE order_status = 'Delivery Pending' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
 														<th scope="row"><?php echo $lead['consumer_name'];?></th>
 														<td data-title="Address"><?php echo $lead['consumer_address'];?></td>
 														<td data-title="Phone"><a href="tel:<?php echo $lead['consumer_phone'];?>"><?php echo $lead['consumer_phone'];?></a></td>
-														<td data-title="Priority"><?php echo $lead['priority'];?></td>
+														<td data-title="Priority"><?php echo $lead['stage'];?></td>
 														<td data-title="FollowUp Date"><?php if(isset($lead['next_followup_date'])){ echo date('d-m-Y',strtotime($lead['next_followup_date']));} else{echo '<font color="white">1</font>';}?></td>
 														<td data-title="Demo Date"><?php if(isset($lead['demo_date'])){ echo date('d-m-Y',strtotime($lead['demo_date']));} else{echo '<font color="white">1</font>';}?></td>
 														<td><?php if($_SESSION['user_name'] != 'Demo')
