@@ -79,7 +79,7 @@ if(isset($_SESSION["user_name"]))
 								<span class="li-social">
 									<a href="index.php"><i class="fa fa-home"></i></a>
 									<a href="priorityList.php"><i class="fa fa-fire"></i></a>
-									<a href="pending.php"><i class="fa fa-hourglass-half"></i></a>
+									<a href="statusList.php"><i class="fa fa-hourglass-half"></i></a>
 									<a href="walkins.php"><i class="fa fa-street-view"></i></a>
 									<a href="logout.php"><i class="fa fa-power-off"></i></a>  										
 								</span>
