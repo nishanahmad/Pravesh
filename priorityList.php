@@ -105,7 +105,7 @@ if(isset($_SESSION["user_name"]))
 												<tfoot>
 												</tfoot>
 												<tbody>																		<?php
-												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE priority = '$priority' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
+												$leads = mysqli_query($con,"SELECT * FROM lead_tracker WHERE priority = '$priority' AND order_status = 'Open' ORDER BY priority,next_followup_date,demo_date,lead_assigned_date") or die(mysqli_error($con));
 												foreach($leads as $lead)
 												{																							?>
 													<tr>
