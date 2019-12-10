@@ -5,7 +5,11 @@ if(isset($_SESSION["user_name"]))
 	require 'connect.php';																				
 	
 	if(isset($_GET['id']))
+	{
 		$id = $_GET['id'];
+		$result = mysqli_query($con,"SELECT * FROM walk_ins WHERE id = $id") or die(mysqli_error($con));
+		$walkIn = mysqli_fetch_array($result,MYSQLI_ASSOC);
+	}
 	
 	if($_POST)
 	{
@@ -119,11 +123,13 @@ if(isset($_SESSION["user_name"]))
 										<div class="form-bottom">											
 											<div class="form-group">
 												<label for="date">Lead Assigned Date </label>
-												<input type="text" name="date" required class="form-control" id="date" value="<?php echo date('d-m-Y'); ?>">
+												<input type="text" name="date" required class="form-control" id="date" 
+													   value="<?php if(isset($walkIn['date'])) echo date('d-m-Y',strtotime($walkIn['date'])); else echo date('d-m-Y'); ?>">
 											</div>			
 											<div class="form-group">
 												<label for="count">count </label>
-												<input type="text" name="count" required class="form-control" id="count">
+												<input type="text" name="count" required class="form-control" id="count"
+													   value="<?php if(isset($walkIn['count'])) echo $walkIn['count']; ?>">
 											</div>																					
 											<button type="submit" class="btn btn-next btn-primary">Submit</button>
 										</div>
